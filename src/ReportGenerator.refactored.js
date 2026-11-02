@@ -20,17 +20,21 @@ export class ReportGenerator {
 
   selectItems(user, items) {
     if (user.role === 'ADMIN') {
-      for (const item of items) {
-        if (item.value > ADMIN_PRIORITY_MIN_VALUE) {
-          item.priority = true;
-        }
-      }
-      return items;
+      return this.selectAdminItems(items);
     }
     if (user.role === 'USER') {
       return items.filter((item) => item.value <= STANDARD_USER_MAX_VALUE);
     }
     return [];
+  }
+
+  selectAdminItems(items) {
+    for (const item of items) {
+      if (item.value > ADMIN_PRIORITY_MIN_VALUE) {
+        item.priority = true;
+      }
+    }
+    return items;
   }
 
   buildCsv(user, items, total) {
